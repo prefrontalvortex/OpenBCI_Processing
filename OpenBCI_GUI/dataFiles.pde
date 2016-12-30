@@ -5,6 +5,9 @@
 // Created: Chip Audette  May 2, 2014
 //
 //write data to a text file
+
+
+
 public class OutputFile_rawtxt {
   PrintWriter output;
   String fname;
@@ -66,11 +69,15 @@ public class OutputFile_rawtxt {
 //  public void writeRawData_dataPacket(DataPacket_ADS1299 data, float scale_to_uV, float scale_for_aux) {
 //    writeRawData_dataPacket(data, scale_to_uV, data.values.length);
 //  }
+// Need to hack in the exact system time. This ultimately needs to be the time the DATA was collected
+// For now, it will be simply the time the dump function is called, which should be good enough
+// Packets arrive every 4 ms @ 250Hz, so the resolution isn't phenomenal but should suffice
   public void writeRawData_dataPacket(DataPacket_ADS1299 data, float scale_to_uV, float scale_for_aux) {
     if (output != null) {
       output.print(Integer.toString(data.sampleIndex));
       writeValues(data.values,scale_to_uV);
       writeValues(data.auxValues,scale_for_aux);
+      writeTime();
       output.println(); rowsWritten++;
       //output.flush();
     }
@@ -83,8 +90,12 @@ public class OutputFile_rawtxt {
       output.print(String.format(Locale.US, "%.2f", scale_fac * float(values[Ival])));
     }
   }
-
-
+  
+  private void writeTime() {
+    long now = System.currentTimeMillis();
+    output.print(", ");
+    output.print(String.format(Locale.US, "%d", now));
+  }
 
   public void closeFile() {
     output.flush();

@@ -24,6 +24,8 @@ import java.util.*; //for Array.copyOfRange()
 import java.util.Map.Entry;
 import processing.serial.*;  //for serial communication to Arduino/OpenBCI
 import java.awt.event.*; //to allow for event listener on screen resize
+import java.lang.System; // Need to bring in the system package to get exact time. Can probably reduce this to currentTimeMillis()
+
 
 boolean isVerbose = false; //set true if you want more verbosity in console.. verbosePrint("print_this_thing") is used to output feedback when isVerbose = true
 
